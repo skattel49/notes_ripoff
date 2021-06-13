@@ -7,7 +7,7 @@ export class Dashboard extends React.Component{
     render(){
         return (
             <div>
-                Dashboard
+                <h1>Welcome to your notes</h1>
             </div>
         );
     }

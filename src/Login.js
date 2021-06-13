@@ -22,12 +22,18 @@ export class Login extends React.Component{
     //sends data to the backend and fetches token if the
     //credentials are valid
     handleClick(){
-        fetch('localhost:2000/login', {
-            method: 'post',
+        fetch('http://localhost:2000/login', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
             body: JSON.stringify(this.state)
         })
-        .then(res => res.json())
+        .then(res => {
+            return res.json()
+        })
         .then(data => {
+            console.log(data);
             localStorage.setItem('token', data.token);
         })
         .catch(err=>{
