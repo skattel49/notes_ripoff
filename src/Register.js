@@ -1,6 +1,6 @@
 import React from 'react';
-
-export class Register extends React.Component{
+import { withRouter } from 'react-router';
+export class RegisterComponent extends React.Component{
     constructor(props){
         super(props);
         this.state = {username:"", password: ""}
@@ -22,7 +22,14 @@ export class Register extends React.Component{
             },
             body: JSON.stringify(this.state)
         }).then(res => res.json()).then(data =>{
-            localStorage.setItem("token", data.token);
+            if(data.hasOwnProperty("err")){
+                console.error(data.err);
+            }
+            else{
+                localStorage.setItem("token", data.token);
+                this.props.history.push('/dashboard');
+            }
+            
         }).catch(err =>{
             console.log(err);
         });
@@ -37,3 +44,5 @@ export class Register extends React.Component{
         );
     }
 };
+
+export const Register = withRouter(RegisterComponent);

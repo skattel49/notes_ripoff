@@ -1,6 +1,8 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 
-export class Login extends React.Component{
+class LoginComponent extends React.Component{
+   
     constructor(props){
         super(props);
         this.state = {username: '', password: ''};
@@ -10,13 +12,10 @@ export class Login extends React.Component{
     }
     //handles changes in username
     handleInputChange(e){
-
-        console.log(e.target.value);
         this.setState({username: e.target.value});
     }
     //handles changes in password field
     handlePasswordChange(e){
-        console.log(e.target.value);
         this.setState({password: e.target.value});
     }
     //sends data to the backend and fetches token if the
@@ -30,11 +29,17 @@ export class Login extends React.Component{
             body: JSON.stringify(this.state)
         })
         .then(res => {
-            return res.json()
+            return res.json();
         })
         .then(data => {
-            console.log(data);
-            localStorage.setItem('token', data.token);
+            if(data.hasOwnProperty('err')){
+                console.error(data.err);
+            }else{
+                localStorage.setItem('token', data.token);
+                console.log(this.props);
+                this.props.history.push('/dashboard');
+            }
+            
         })
         .catch(err=>{
             console.log(err);
@@ -50,3 +55,5 @@ export class Login extends React.Component{
         );
     }
 };
+
+export const Login =  withRouter(LoginComponent);
