@@ -14,6 +14,7 @@ export class RegisterComponent extends React.Component{
     handlePasswordChange(e){
         this.setState({password: e.target.value});
     }
+    
     handleClick(){
         fetch('http://localhost:2000/signup', {
             method: 'POST',
@@ -27,6 +28,7 @@ export class RegisterComponent extends React.Component{
             }
             else{
                 localStorage.setItem("token", data.token);
+                localStorage.setItem("username", this.state.username);
                 this.props.history.push('/dashboard');
             }
             

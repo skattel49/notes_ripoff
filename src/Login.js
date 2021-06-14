@@ -36,7 +36,7 @@ class LoginComponent extends React.Component{
                 console.error(data.err);
             }else{
                 localStorage.setItem('token', data.token);
-                console.log(this.props);
+                localStorage.setItem('username', this.state.username);
                 this.props.history.push('/dashboard');
             }
             
