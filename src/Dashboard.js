@@ -9,6 +9,7 @@ export class Dashboard extends React.Component{
     }
 
     componentDidMount(){
+        //fetches all the lists and embeds items to the list
         fetch(`http://localhost:2000/lists?username=${localStorage.getItem("username")}`,{
             method: "GET",
             credentials: "same-origin",
@@ -26,7 +27,7 @@ export class Dashboard extends React.Component{
             for(let list of data.lists){
                 fetch(`http://localhost:2000/items?id=${list._id}`,{
                     method: "GET",
-                    credentials: "same-origin",
+                    credentials: "include",
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem("token")}`
                     }
@@ -41,7 +42,7 @@ export class Dashboard extends React.Component{
     handleClick(e){
         fetch(`http://localhost:2000/lists/`, {
             method: "GET",
-            credentials: 'same-origin',
+            credentials: 'include',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem("token")}`
             }
