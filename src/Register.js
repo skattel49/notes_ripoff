@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
+import { Post } from './requests';
 export class RegisterComponent extends React.Component{
     constructor(props){
         super(props);
@@ -16,13 +17,10 @@ export class RegisterComponent extends React.Component{
     }
     
     handleClick(){
-        fetch('http://localhost:2000/signup', {
-            method: 'POST',
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify(this.state)
-        }).then(res => res.json()).then(data =>{
+        let req_body = this.state;
+
+        Post('/signup', req_body)
+        .then(res => res.json()).then(data =>{
             if(data.hasOwnProperty("err")){
                 console.error(data.err);
             }

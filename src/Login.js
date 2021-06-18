@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
+import {Post} from './requests';
 
 class LoginComponent extends React.Component{
    
@@ -21,14 +22,9 @@ class LoginComponent extends React.Component{
     //sends data to the backend and fetches token if the
     //credentials are valid
     handleClick(){
-        fetch('http://localhost:2000/login', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(this.state)
-        })
-        .then(res => {
+        let req_body = this.state;
+        
+        Post('/login', req_body).then(res => {
             return res.json();
         })
         .then(data => {

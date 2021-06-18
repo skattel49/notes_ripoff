@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Get, Post } from './requests';
 export class List extends React.Component{
     constructor(props){
         super(props);
@@ -12,15 +12,9 @@ export class List extends React.Component{
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
-    
+
     componentDidMount(){
-        fetch(`http://localhost:2000/items?id=${this.state.id}`, {
-                method: 'get',
-                credentials: 'include',
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
-                })
+        Get('/items', `id=${this.state.id}`)
         .then(res => res.json())
         .then(list_data => {
             //console.log(list_data.list_items);
@@ -33,19 +27,11 @@ export class List extends React.Component{
     }
 
     handleClick(e){
-        fetch('http://localhost:2000/items', {
-            method: 'POST',
-            credentials: 'include',
-            headers:{
-                'authorization': `Bearer ${localStorage.getItem('token')}`,
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                body: this.state.new_item,
-                id: this.state.id
-            })
-        })
-        .then(res => res.json())
+        let req_body = {
+            body: this.state.new_item,
+            id: this.state.id
+        };
+        Post('/items', req_body).then(res => res.json())
         .then(item_data => {
             document.getElementById(`${this.state.id}`).value = "";
             this.setState({items: [...this.state.items, item_data]})

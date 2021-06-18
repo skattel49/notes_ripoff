@@ -1,5 +1,6 @@
 import React from 'react';
 import {List} from './List';
+import {Get, Post} from './requests';
 
 export class Dashboard extends React.Component{
     constructor(props){
@@ -10,16 +11,9 @@ export class Dashboard extends React.Component{
     }
 
     componentDidMount(){
-        fetch(`http://localhost:2000/lists?username=${localStorage.getItem("username")}`,{
-                method: "GET",
-                credentials: "include",
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`
-                }
-            })
+        Get('/lists', `username=${localStorage.getItem('username')}`)
             .then(res => res.json())
             .then(user_data => {
-                //console.log(user_data);
                 //fetch items of all the lists
                 this.setState({lists: user_data[0].user_lists});
             })
@@ -27,18 +21,12 @@ export class Dashboard extends React.Component{
     }
 
     handleClick(e){
-        fetch(`http://localhost:2000/lists/`, {
-            method: "post",
-            credentials: 'include',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                'Content-type' : 'application/json'
-            },
-            body: JSON.stringify({
-                title: this.state.newList,
-                username: localStorage.getItem("username")
-            })
-        }).then( res => res.json())
+        let req_body = {
+            title: this.state.newList,
+            username: localStorage.getItem("username")
+        }
+        
+        Post('/lists/',req_body).then( res => res.json())
         .then(list_data => {
             //console.log(list_data)
             this.setState({lists: [...this.state.lists, list_data]});
