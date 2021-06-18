@@ -1,13 +1,19 @@
+/*
+    A gentle reminder, never use indexes as keys in react,
+    will give you a lot of trouble and unexpected bugs
+*/
 import React from 'react';
 import {List} from './List';
-import {Get, Post} from './requests';
+import {Get, Post, Delete} from './requests';
 
 export class Dashboard extends React.Component{
     constructor(props){
         super(props);
         this.state = {lists: [], newList: ""};
+        //binding this to event handlers
         this.handleClick = this.handleClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     componentDidMount(){
@@ -20,12 +26,23 @@ export class Dashboard extends React.Component{
             .catch(err => console.error(err));
     }
 
+    handleDelete(e){
+        let removalIndex = parseInt(e.target.id);
+        //now delete the list and all it's items
+        //console.log([...this.state.lists.slice(0,removalIndex), ...this.state.lists.slice(removalIndex+1)]);
+        this.setState(
+            {lists:
+                [...this.state.lists.slice(0,removalIndex), ...this.state.lists.slice(removalIndex+1)]
+            }
+        );
+    }
+
     handleClick(e){
         let req_body = {
             title: this.state.newList,
             username: localStorage.getItem("username")
         }
-        
+
         Post('/lists/',req_body).then( res => res.json())
         .then(list_data => {
             //console.log(list_data)
@@ -45,7 +62,12 @@ export class Dashboard extends React.Component{
         const allLists = [];
         let counter = 0;
         for(let list of this.state.lists){
-            allLists.push(<List key={counter} title={list.title} id={list._id}/>);
+            allLists.push(
+            <div className="lst" key={"div_"+list._id}>
+                <button id={counter} onClick={this.handleDelete}>-</button>
+                <List title={list.title} id={list._id}/>
+            </div>
+            );
             counter++;
         }
         return (

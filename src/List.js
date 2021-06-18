@@ -1,5 +1,5 @@
 import React from 'react';
-import { Get, Post } from './requests';
+import { Get, Post, Delete } from './requests';
 export class List extends React.Component{
     constructor(props){
         super(props);
@@ -11,6 +11,7 @@ export class List extends React.Component{
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     componentDidMount(){
@@ -22,6 +23,15 @@ export class List extends React.Component{
             })
         .catch(err => console.error(err));
     }
+
+    handleDelete(e){
+        const removalIndex = parseInt(e.target.id);
+        //remove it after actually deleting the items
+        this.setState({
+            items: [...this.state.items.slice(0, removalIndex), ...this.state.items.slice(removalIndex+1)]
+        });
+    }
+
     handleChange(e){
         this.setState({new_item: e.target.value});
     }
@@ -43,7 +53,11 @@ export class List extends React.Component{
         const list_of_items = [];
         let counter = 0;
         for(let item of this.state.items){
-            list_of_items.push(<li key={counter}>{item.body}</li>);
+            list_of_items.push(
+                <li key={"li"+item._id}>
+                    <p>{item.body}</p>
+                    <button id={counter} onClick={this.handleDelete}>-</button>
+                </li>);
             counter++;
         }
         return (
