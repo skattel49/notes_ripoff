@@ -1,55 +1,50 @@
 import React from 'react';
+import {List} from './List';
 
 export class Dashboard extends React.Component{
     constructor(props){
         super(props);
-        this.state = {lists: [], items: [], newList: ""};
+        this.state = {lists: [], newList: ""};
         this.handleClick = this.handleClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount(){
-        //fetches all the lists and embeds items to the list
         fetch(`http://localhost:2000/lists?username=${localStorage.getItem("username")}`,{
-            method: "GET",
-            credentials: "same-origin",
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem("token")}`
-            }
-        }).then(res => res.json)
-        .then(data => {
-            if(!data.hasOwnProperty("lists")){
-                return;
-            }
-            this.state.lists = data.lists;
-            //after fetching all the lists
-            //fetch all the items of the list
-            for(let list of data.lists){
-                fetch(`http://localhost:2000/items?id=${list._id}`,{
-                    method: "GET",
-                    credentials: "include",
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem("token")}`
-                    }
-                }).then(res => res.json())
-                .then(data => {
-                    this.state.items.push(data.items);
-                }).catch(err => console.log(err));
-            }
-        }).catch(err => console.error(err));
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                }
+            })
+            .then(res => res.json())
+            .then(user_data => {
+                //console.log(user_data);
+                //fetch items of all the lists
+                this.setState({lists: user_data[0].user_lists});
+            })
+            .catch(err => console.error(err));
     }
 
     handleClick(e){
         fetch(`http://localhost:2000/lists/`, {
-            method: "GET",
+            method: "post",
             credentials: 'include',
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem("token")}`
-            }
-        }).then( res => res.text())
-        .then(data => console.log(data))
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'Content-type' : 'application/json'
+            },
+            body: JSON.stringify({
+                title: this.state.newList,
+                username: localStorage.getItem("username")
+            })
+        }).then( res => res.json())
+        .then(list_data => {
+            //console.log(list_data)
+            this.setState({lists: [...this.state.lists, list_data]});
+            document.getElementById("_list").value = "";
+        })
         .catch(err=> {
-            console.log("hi");
             console.error(err)
         });
     }
@@ -59,10 +54,11 @@ export class Dashboard extends React.Component{
     }
 
     render(){
-        console.log(this.state);
         const allLists = [];
-        for(const [idx, value] of this.state.lists){
-            allLists.push(<li key={idx}>{value}</li>);
+        let counter = 0;
+        for(let list of this.state.lists){
+            allLists.push(<List key={counter} title={list.title} id={list._id}/>);
+            counter++;
         }
         return (
             <div>
@@ -70,7 +66,7 @@ export class Dashboard extends React.Component{
                 <ul>
                     {allLists}
                 </ul>
-                <input type="text" placeholder="Create a new list" onChange={this.handleChange}/>
+                <input id="_list" type="text" placeholder="Create a new list" onChange={this.handleChange}/>
                 <button onClick={this.handleClick}>+</button>
             </div>
         );
