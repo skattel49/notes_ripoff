@@ -27,6 +27,10 @@ export class List extends React.Component{
     handleDelete(e){
         const removalIndex = parseInt(e.target.id);
         //remove it after actually deleting the items
+        Delete('/items', {id: this.state.items[removalIndex]._id})
+        .then(res => res.json())
+        .then(data => {})
+        .catch(err=>console.error(err));
         this.setState({
             items: [...this.state.items.slice(0, removalIndex), ...this.state.items.slice(removalIndex+1)]
         });
