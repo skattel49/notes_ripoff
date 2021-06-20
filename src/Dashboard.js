@@ -30,11 +30,18 @@ export class Dashboard extends React.Component{
         let removalIndex = parseInt(e.target.id);
         //now delete the list and all it's items
         //console.log([...this.state.lists.slice(0,removalIndex), ...this.state.lists.slice(removalIndex+1)]);
-        this.setState(
-            {lists:
-                [...this.state.lists.slice(0,removalIndex), ...this.state.lists.slice(removalIndex+1)]
-            }
-        );
+        Delete('/lists', {id: this.state.lists[removalIndex]._id})
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            this.setState(
+                {lists:
+                    [...this.state.lists.slice(0,removalIndex), ...this.state.lists.slice(removalIndex+1)]
+                }
+            );
+        })
+        .catch(err => console.error(err));
+        
     }
 
     handleClick(e){
