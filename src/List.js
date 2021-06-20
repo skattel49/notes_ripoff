@@ -29,11 +29,12 @@ export class List extends React.Component{
         //remove it after actually deleting the items
         Delete('/items', {id: this.state.items[removalIndex]._id})
         .then(res => res.json())
-        .then(data => {})
+        .then(data => {
+            this.setState({
+                items: [...this.state.items.slice(0, removalIndex), ...this.state.items.slice(removalIndex+1)]
+            });
+        })
         .catch(err=>console.error(err));
-        this.setState({
-            items: [...this.state.items.slice(0, removalIndex), ...this.state.items.slice(removalIndex+1)]
-        });
     }
 
     handleChange(e){
