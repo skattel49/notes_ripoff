@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 import {Post} from './requests';
+import './Login.css';
 
 class LoginComponent extends React.Component{
    
@@ -43,10 +44,12 @@ class LoginComponent extends React.Component{
     }
     render(){
         return (
-            <div>
-                <input type="text" placeholder="Username" onChange={this.handleInputChange}/>
-                <input type="password" placeholder="Password" onChange={this.handlePasswordChange}/>
-                <button onClick={this.handleClick}>Submit</button>
+            <div className="container-login">
+                <div className="flex-login">
+                    <input className="input-login" type="text" placeholder="Username" onChange={this.handleInputChange}/>
+                    <input className="input-login" type="password" placeholder="Password" onChange={this.handlePasswordChange}/>
+                    <button className="button-login" onClick={this.handleClick}>Login</button>
+                </div>
             </div>
         );
     }

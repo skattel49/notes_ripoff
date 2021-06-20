@@ -5,6 +5,7 @@
 import React from 'react';
 import {List} from './List';
 import {Get, Post, Delete} from './requests';
+import './Dashboard.css';
 
 export class Dashboard extends React.Component{
     constructor(props){
@@ -45,6 +46,9 @@ export class Dashboard extends React.Component{
     }
 
     handleClick(e){
+        if(this.state.newList === ""){
+            return;
+        }
         let req_body = {
             title: this.state.newList,
             username: localStorage.getItem("username")
@@ -53,7 +57,7 @@ export class Dashboard extends React.Component{
         Post('/lists/',req_body).then( res => res.json())
         .then(list_data => {
             //console.log(list_data)
-            this.setState({lists: [...this.state.lists, list_data]});
+            this.setState({lists: [...this.state.lists, list_data], newList: ""});
             document.getElementById("_list").value = "";
         })
         .catch(err=> {
@@ -70,21 +74,21 @@ export class Dashboard extends React.Component{
         let counter = 0;
         for(let list of this.state.lists){
             allLists.push(
-            <div className="lst" key={"div_"+list._id}>
-                <button id={counter} onClick={this.handleDelete}>-</button>
+            <li className="li-dashboard" key={"div_"+list._id}>
+                <button className="button-dashboard-minus" id={counter} onClick={this.handleDelete}>-</button>
                 <List title={list.title} id={list._id}/>
-            </div>
+            </li>
             );
             counter++;
         }
         return (
             <div>
-                <h1>Welcome to your notes</h1>
-                <ul>
+                <h1>Welcome to your notes {localStorage.getItem("username")}</h1>
+                <ul className="flex-dashboard">
                     {allLists}
                 </ul>
-                <input id="_list" type="text" placeholder="Create a new list" onChange={this.handleChange}/>
-                <button onClick={this.handleClick}>+</button>
+                <input className="input-dashboard" id="_list" type="text" placeholder="Create a new list" onChange={this.handleChange}/>
+                <button className="button-dashboard-plus" onClick={this.handleClick}>+</button>
             </div>
         );
     }

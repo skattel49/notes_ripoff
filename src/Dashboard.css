@@ -1,0 +1,41 @@
+*{
+    box-sizing: border-box;
+}
+
+.flex-dashboard{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.input-dashboard{
+    width: 20em;
+    height: 2em;
+    border-radius: 0;
+    border-width: 1px;
+}
+
+.button-dashboardplus{
+    height: 2em;
+    width: 3em;
+    border-radius: 0;
+    border: none;
+    background-color: rgb(15, 97, 221);
+    color: white;
+}
+
+.button-dashboard-minus{
+    height: 2em;
+    width: 2em;
+    border-radius: 0;
+    border: none;
+    background-color: rgb(255, 0, 0);
+    color: white;
+}
+
+.li-dashboard{
+    list-style-type: none;
+    background-color: yellow;
+    margin-right: 2em;
+    margin-top: 2em;
+}

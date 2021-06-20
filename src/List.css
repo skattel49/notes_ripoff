@@ -1,0 +1,23 @@
+*{
+    box-sizing: border-box;
+}
+
+.li-list{
+    list-style-type: none;
+    margin-bottom: 0.5em;
+}
+
+.button-list-minus{
+    background-color: red;
+    color: white;
+    border: none;
+}
+
+.h3-list{
+    text-align: center;
+}
+
+.p-list{
+    display: inline;
+    margin-right: 10%;
+}

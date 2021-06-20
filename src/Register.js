@@ -36,10 +36,12 @@ export class RegisterComponent extends React.Component{
     }
     render(){
         return (
-            <div>
-                <input type="text" placeholder="Choose a username" onChange={this.handleInputChange}/>
-                <input type="password" placeholder="Password" onChange={this.handlePasswordChange}/>
-                <button onClick={this.handleClick}>Submit</button>
+            <div className="container-login">
+                <div className="flex-login">
+                    <input className="input-login" type="text" placeholder="Choose a username" onChange={this.handleInputChange}/>
+                    <input className="input-login" type="password" placeholder="Password" onChange={this.handlePasswordChange}/>
+                    <button className="button-login" onClick={this.handleClick}>Register</button>
+                </div>
             </div>
         );
     }

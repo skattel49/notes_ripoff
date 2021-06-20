@@ -1,5 +1,6 @@
 import React from 'react';
 import { Get, Post, Delete } from './requests';
+import "./List.css";
 export class List extends React.Component{
     constructor(props){
         super(props);
@@ -42,6 +43,9 @@ export class List extends React.Component{
     }
 
     handleClick(e){
+        if(this.state.new_item === ""){
+            return;
+        }
         let req_body = {
             body: this.state.new_item,
             id: this.state.id
@@ -49,7 +53,7 @@ export class List extends React.Component{
         Post('/items', req_body).then(res => res.json())
         .then(item_data => {
             document.getElementById(`${this.state.id}`).value = "";
-            this.setState({items: [...this.state.items, item_data]})
+            this.setState({items: [...this.state.items, item_data], new_item: ""})
         })
         .catch(err => console.error(err));
     }
@@ -59,15 +63,15 @@ export class List extends React.Component{
         let counter = 0;
         for(let item of this.state.items){
             list_of_items.push(
-                <li key={"li"+item._id}>
-                    <p>{item.body}</p>
-                    <button id={counter} onClick={this.handleDelete}>-</button>
+                <li className="li-list" key={"li"+item._id}>
+                    <p className="p-list">{item.body}</p>
+                    <button className="button-list-minus" id={counter} onClick={this.handleDelete}>-</button>
                 </li>);
             counter++;
         }
         return (
             <div>
-                <h3>{this.state.title}</h3>
+                <h3 className="h3-list">{this.state.title}</h3>
                 <ul>
                     {list_of_items}
                 </ul>
