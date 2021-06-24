@@ -13,20 +13,22 @@
 version: "3.0"
 services:
     frontend:
-        name: notes_ripoff_frontend
+        container_name: notes_ripoff_frontend
         build: ./notes_ripoff/
         ports:
             - "2001:3000"
     backend:
-        name: notes_ripoff_backend
+        container_name: notes_ripoff_backend
         build: ./CRUD_API_NODE_MONGOOSE
         restart: always
         ports:
             - "2000:3001"
     mongo:
-        name: mongo
+        container_name: mongo
         image: mongo
         restart: "always"
+        ports:
+            - "27017:27017"
 ```
 
 ## Create docker images
