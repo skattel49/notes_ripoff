@@ -1,7 +1,7 @@
 # Getting started with the fullstack Todo App
 
 ## Clone the git repo
-`$git clone https://$hub.com/skattel49/notes_ripoff`
+`$git clone https://github.com/skattel49/notes_ripoff.git`
 
 ## Clone the backend of the project
 `$git clone https://github.com/skattel49/CRUD_API_NODE_MONGOOSE.git`
